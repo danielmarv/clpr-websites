@@ -1,0 +1,87 @@
+---
+/** Who acts, in what order, when a channel needs a different verifier: both a compromise and a proof format upgrade end in a new channel, because the verifier address is fixed for the channel's life; design §4.7 and §5, spec §8.8. */
+import Figure from '@kse/components/Figure.astro';
+import { design } from '../../../lib/sources';
+---
+<Figure
+  lead="A different verifier means a new channel."
+  caption="The verifier developer publishes, the connector operator registers, the application developer migrates and the admin closes the old channel. For a compromise the close comes first and in-flight messages may end UNRESOLVED; for a planned format upgrade the close comes last, after the source has kept the old format alive long enough to migrate."
+  source={[{ label: 'design §4.7', href: design('47-cross-role-scenarios') }, { label: 'design §5', href: design('5-recovery-scenarios') }]}
+  kind="spec"
+  minWidth={760}
+>
+  <svg viewBox="0 0 760 396" role="img" aria-label="A trigger, either a security advisory or a proof format change, reaches the verifier developer and the CLPR Service admin. The verifier developer publishes a patched or new-format verifier; the connector operator registers a new channel with it and a connector on both ledgers; the application developer migrates to the new channel. The admin closes the old channel, at once for a compromise and after migration for an upgrade; the old channel drains through CLOSING and DRAINED to CLOSED, and in-flight messages may end UNRESOLVED, while new traffic moves to the new one.">
+    <defs>
+      <marker id="ncm-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--text-3)" /></marker>
+      <marker id="ncm-arrow-ok" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--ok)" /></marker>
+      <marker id="ncm-arrow-money" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--money)" /></marker>
+      <marker id="ncm-arrow-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--a)" /></marker>
+      <marker id="ncm-arrow-bad" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--bad)" /></marker>
+    </defs>
+
+    <!-- row 1: trigger, verifier developer, connector operator -->
+    <rect x="20" y="34" width="196" height="66" rx="8" class="d-surface" />
+    <text x="118" y="56" class="t b center">Trigger</text>
+    <text x="118" y="74" class="t small center">compromise: security advisory</text>
+    <text x="118" y="90" class="t small center">upgrade: proof format change</text>
+    <circle cx="30" cy="21" r="9" class="d-grey" /><text x="30" y="25" class="t small center b">1</text>
+
+    <line x1="216" y1="67" x2="280" y2="67" class="line" marker-end="url(#ncm-arrow)" />
+
+    <rect x="282" y="34" width="196" height="66" rx="8" class="d-ok" />
+    <text x="380" y="56" class="t b center">Verifier Developer</text>
+    <text x="380" y="74" class="t small center">publishes a patched or</text>
+    <text x="380" y="90" class="t small center">new-format verifier</text>
+    <circle cx="292" cy="21" r="9" class="d-grey" /><text x="292" y="25" class="t small center b">2</text>
+
+    <line x1="478" y1="67" x2="542" y2="67" class="line ok" marker-end="url(#ncm-arrow-ok)" />
+
+    <rect x="544" y="34" width="196" height="66" rx="8" class="d-money" />
+    <text x="642" y="56" class="t b center">Connector Operator</text>
+    <text x="642" y="74" class="t small center">new channel with it;</text>
+    <text x="642" y="90" class="t small center">connector on both ledgers</text>
+    <circle cx="554" cy="21" r="9" class="d-grey" /><text x="554" y="25" class="t small center b">3</text>
+
+    <!-- down to row 2 -->
+    <line x1="118" y1="100" x2="118" y2="146" class="line" marker-end="url(#ncm-arrow)" />
+    <line x1="642" y1="100" x2="642" y2="146" class="line money" marker-end="url(#ncm-arrow-money)" />
+    <text x="650" y="127" class="t small">registers</text>
+
+    <!-- row 2: admin, old channel, new channel -->
+    <rect x="20" y="148" width="196" height="80" rx="8" class="d-grey" />
+    <text x="118" y="170" class="t b center">CLPR Service Admin</text>
+    <text x="118" y="188" class="t mono center">closeChannel(old)</text>
+    <text x="118" y="204" class="t small center">compromise: at once;</text>
+    <text x="118" y="218" class="t small center">upgrade: after migration</text>
+
+    <line x1="216" y1="188" x2="280" y2="188" class="line bad" marker-end="url(#ncm-arrow-bad)" />
+    <text x="248" y="180" class="t small center">closes</text>
+
+    <rect x="282" y="148" width="196" height="80" rx="8" class="d-bad" />
+    <text x="380" y="170" class="t b center">Old channel</text>
+    <text x="380" y="188" class="t small center">in-flight may end UNRESOLVED</text>
+    <text x="380" y="206" class="t small center">CLOSING → DRAINED → CLOSED</text>
+    <text x="380" y="220" class="t small center">verifier address fixed</text>
+
+    <line x1="478" y1="188" x2="542" y2="188" class="line dash" marker-end="url(#ncm-arrow)" />
+
+    <rect x="544" y="148" width="196" height="80" rx="8" class="d-ok" />
+    <text x="642" y="170" class="t b center">New channel</text>
+    <text x="642" y="188" class="t small center">correct verifier;</text>
+    <text x="642" y="206" class="t mono center">ACTIVE</text>
+    <text x="642" y="220" class="t small center">new traffic goes here</text>
+
+    <!-- row 3: application developer -->
+    <line x1="642" y1="274" x2="642" y2="230" class="line a" marker-end="url(#ncm-arrow-a)" />
+    <text x="650" y="256" class="t small">migrates</text>
+
+    <rect x="544" y="274" width="196" height="60" rx="8" class="d-a" />
+    <text x="642" y="296" class="t b center">Application Developer</text>
+    <text x="642" y="314" class="t mono center">channel_id · connector_id</text>
+    <text x="642" y="328" class="t small center">switch and migrate users</text>
+    <circle cx="554" cy="261" r="9" class="d-grey" /><text x="554" y="265" class="t small center b">4</text>
+
+    <text x="380" y="364" class="t take center">A channel's verifier address is fixed for its life, so a different verifier means a new channel.</text>
+    <text x="380" y="380" class="t take center">For a compromise, the window of vulnerability is between discovery and close.</text>
+  </svg>
+</Figure>

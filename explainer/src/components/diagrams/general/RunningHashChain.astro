@@ -1,0 +1,80 @@
+---
+/** How the running hash is built: each running hash is SHA-256 of the previous running hash joined to the message, starting from thirty-two zero bytes; only the last one is covered by the validators' signature. Draws from spec §4.1 (running hash computation) and design §3.2.2 (message storage). */
+import Figure from '@kse/components/Figure.astro';
+import { design, spec } from '../../../lib/sources';
+---
+<Figure
+  lead="A chain, not a list of hashes."
+  caption="Each running hash is SHA-256 of the previous running hash joined to the message, starting from thirty-two zero bytes; the EVM contracts still hash the message first and chain that hash. Only the last one is covered by the validators' signature; because every earlier message feeds into it, that one signature vouches for all forty."
+  source={[{ label: 'spec §4.1', href: spec('41-running-hash-computation') }, { label: 'design §3.2.2', href: design('322-message-storage') }]}
+  kind="spec"
+  minWidth={760}
+>
+  <svg viewBox="0 0 760 290" role="img" aria-label="A chain of running hashes H0 to H40. H0 is thirty-two zero bytes. Each message feeds down into its running hash, and each running hash feeds right into the next. The validators' signature covers only H40. A warning shows that changing message 2 changes H2 and every running hash after it.">
+    <defs>
+      <marker id="rhc-arrow" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 Z" fill="var(--text-3)"/></marker>
+      <marker id="rhc-arrow-a" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 Z" fill="var(--a)"/></marker>
+      <marker id="rhc-arrow-ok" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 Z" fill="var(--ok)"/></marker>
+      <marker id="rhc-arrow-bad" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 Z" fill="var(--bad)"/></marker>
+    </defs>
+
+    <!-- tamper marker above message 2 -->
+    <text x="316" y="24" class="t small center bad">change this one</text>
+    <line x1="316" y1="30" x2="316" y2="44" class="line bad" marker-end="url(#rhc-arrow-bad)"/>
+
+    <!-- message row -->
+    <rect x="130" y="48" width="108" height="46" rx="8" class="d-a"/>
+    <text x="184" y="67" class="t small center b">message 1</text>
+    <text x="184" y="84" class="t mono center">ping</text>
+    <rect x="262" y="48" width="108" height="46" rx="8" class="d-a"/>
+    <text x="316" y="67" class="t small center b">message 2</text>
+    <text x="316" y="84" class="t mono center">pay Bo 5</text>
+    <text x="410" y="76" class="t b center muted">…</text>
+    <rect x="450" y="48" width="128" height="46" rx="8" class="d-a"/>
+    <text x="514" y="67" class="t small center b">message 40</text>
+    <text x="514" y="84" class="t small center">the last in the batch</text>
+
+    <!-- running hash row -->
+    <rect x="16" y="134" width="92" height="50" rx="8" class="d-grey"/>
+    <text x="62" y="154" class="t b center">H0</text>
+    <text x="62" y="172" class="t small center">32 zero bytes</text>
+    <rect x="130" y="134" width="108" height="50" rx="8" class="d-grey"/>
+    <text x="184" y="154" class="t b center">H1</text>
+    <text x="184" y="172" class="t mono center muted">SHA-256(H0‖m1)</text>
+    <rect x="262" y="134" width="108" height="50" rx="8" class="d-grey"/>
+    <text x="316" y="154" class="t b center">H2</text>
+    <text x="316" y="172" class="t mono center muted">SHA-256(H1‖m2)</text>
+    <text x="410" y="163" class="t b center muted">…</text>
+    <text x="410" y="200" class="t small center muted">3 to 39</text>
+    <rect x="450" y="134" width="128" height="50" rx="8" class="d-ok"/>
+    <text x="514" y="154" class="t b center">H40</text>
+    <text x="514" y="172" class="t small center">the anchor</text>
+
+    <!-- validators' signature -->
+    <rect x="624" y="126" width="120" height="66" rx="10" class="d-ok"/>
+    <text x="684" y="150" class="t b center">Validators'</text>
+    <text x="684" y="166" class="t b center">signature</text>
+    <text x="684" y="183" class="t small center">covers H40 only</text>
+
+    <!-- arrows: message n feeds Hn -->
+    <line x1="184" y1="94" x2="184" y2="132" class="line a" marker-end="url(#rhc-arrow-a)"/>
+    <line x1="316" y1="94" x2="316" y2="132" class="line a" marker-end="url(#rhc-arrow-a)"/>
+    <line x1="514" y1="94" x2="514" y2="132" class="line a" marker-end="url(#rhc-arrow-a)"/>
+    <!-- arrows: Hn-1 feeds Hn -->
+    <line x1="108" y1="159" x2="128" y2="159" class="line" marker-end="url(#rhc-arrow)"/>
+    <line x1="238" y1="159" x2="260" y2="159" class="line" marker-end="url(#rhc-arrow)"/>
+    <line x1="370" y1="159" x2="394" y2="159" class="line" marker-end="url(#rhc-arrow)"/>
+    <line x1="426" y1="159" x2="448" y2="159" class="line" marker-end="url(#rhc-arrow)"/>
+    <!-- signature signs H40 -->
+    <line x1="624" y1="159" x2="582" y2="159" class="line ok" marker-end="url(#rhc-arrow-ok)"/>
+    <text x="601" y="150" class="t small center muted">signs</text>
+
+    <!-- consequence of tampering: H2 … H40 all change -->
+    <path d="M264,206 L264,214 L576,214 L576,206" class="line bad"/>
+    <text x="420" y="232" class="t small center bad">then H2, H3 … H40 all change, and the signed H40 no longer matches</text>
+
+    <!-- formula and takeaway -->
+    <text x="380" y="256" class="t mono center muted">Hn = SHA-256( Hn-1 ‖ message n ), H0 = 32 zero bytes</text>
+    <text x="380" y="276" class="t take center">Each running hash folds in the one before it; change anything and the proven last value no longer matches.</text>
+  </svg>
+</Figure>

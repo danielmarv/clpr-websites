@@ -1,0 +1,44 @@
+---
+/** A star built from pairs: one ledger with a channel to each of four others. The site's own illustration of what pairwise channels (design §2.1: a channel is an on-ledger entity for one specific peer) allow; CLPR itself knows only pairs and does no routing, so a message between two spokes exists only if the hub's application forwards it. General page section 12. Static markup for scripts/preview-diagram.mjs. */
+import Figure from '@kse/components/Figure.astro';
+import { design } from '../../../lib/sources';
+---
+<Figure
+  lead="A star is four pairs."
+  caption="One ledger holds a channel with each of four others. Every spoke is its own agreement, with a verifier chosen for it on each side and its own queues. CLPR defines channels between two ledgers only: a message from B to C has no path unless an application on the hub receives it and sends it on as a new message of its own."
+  source={[{ label: 'design §2.1', href: design('21-common-terminology') }]}
+  kind="plain"
+  minWidth={720}
+>
+  <svg viewBox="0 0 720 350" role="img" aria-label="A hub ledger in the centre with four ledgers around it, B, C, D and E, each joined to the hub by a line labelled channel. A dashed, crossed-out line between B and C shows that no channel joins two spokes directly.">
+    <line x1="275" y1="136" x2="177" y2="94" class="line c" />
+    <line x1="445" y1="136" x2="543" y2="94" class="line c" />
+    <line x1="275" y1="208" x2="177" y2="250" class="line c" />
+    <line x1="445" y1="208" x2="543" y2="250" class="line c" />
+    <text x="200" y="130" class="t small center">channel</text>
+    <text x="520" y="130" class="t small center">channel</text>
+    <text x="200" y="222" class="t small center">channel</text>
+    <text x="520" y="222" class="t small center">channel</text>
+    <rect x="40" y="46" width="160" height="48" rx="10" class="d-b" />
+    <text x="120" y="68" class="t b center">Ledger B</text>
+    <text x="120" y="85" class="t small center">one channel to the hub</text>
+    <rect x="520" y="46" width="160" height="48" rx="10" class="d-c" />
+    <text x="600" y="68" class="t b center">Ledger C</text>
+    <text x="600" y="85" class="t small center">one channel to the hub</text>
+    <rect x="40" y="250" width="160" height="48" rx="10" class="d-money" />
+    <text x="120" y="272" class="t b center">Ledger D</text>
+    <text x="120" y="289" class="t small center">one channel to the hub</text>
+    <rect x="520" y="250" width="160" height="48" rx="10" class="d-ok" />
+    <text x="600" y="272" class="t b center">Ledger E</text>
+    <text x="600" y="289" class="t small center">one channel to the hub</text>
+    <rect x="260" y="136" width="200" height="72" rx="12" class="d-a" />
+    <text x="360" y="164" class="t b center">Hub ledger</text>
+    <text x="360" y="182" class="t small center">four channels</text>
+    <text x="360" y="197" class="t small center">one application that forwards</text>
+    <line x1="200" y1="30" x2="520" y2="30" class="line bad dash" />
+    <line x1="352" y1="22" x2="368" y2="38" class="line bad" />
+    <line x1="368" y1="22" x2="352" y2="38" class="line bad" />
+    <text x="360" y="16" class="t small center bad">no channel between B and C: no path, unless the hub's application forwards</text>
+    <text x="360" y="336" class="t take center">CLPR knows pairs; shapes are what applications build from them.</text>
+  </svg>
+</Figure>

@@ -1,0 +1,182 @@
+{
+  "$comment": "Per-site settings the engine reads. docs name the specification documents whose headings the pages cite; refHelpers name the link helpers the content uses (src/lib/sources.ts).",
+  "id": "clpr",
+  "names": {
+    "name": "CLPR",
+    "deployment_name": "CLPR",
+    "full_name": "Cross Ledger Protocol"
+  },
+  "brand": "The plumbing of CLPR",
+  "primarySource": "clpr-spec",
+  "docs": {
+    "design": {
+      "source": "clpr-spec",
+      "path": "clpr-service.md",
+      "label": "design document"
+    },
+    "spec": {
+      "source": "clpr-spec",
+      "path": "clpr-service-spec.md",
+      "label": "protocol specification"
+    }
+  },
+  "refHelpers": [
+    {
+      "fn": "design",
+      "doc": "design"
+    },
+    {
+      "fn": "spec",
+      "doc": "spec"
+    },
+    {
+      "fn": "sol",
+      "source": "clpr-smart-contracts"
+    }
+  ],
+  "pages": {
+    "general": {
+      "path": "/",
+      "exportFile": "plumbing-of-clpr.html"
+    },
+    "developers": {
+      "path": "/developers/",
+      "exportFile": "plumbing-of-clpr-developers.html"
+    }
+  },
+  "provenance": {
+    "intro": "The <a href=\"{{orgUrl}}\">LFDT-CLPR</a> repositories and commits this explainer describes, as of {{lastSynced}}."
+  },
+  "footer": [
+    "An explainer for <a href=\"{{orgUrl}}\">CLPR</a>, a bridgeless cross-ledger protocol developed as an <a href=\"{{labUrl}}\">LF Decentralized Trust</a> lab, part of the <a href=\"/\">CLPR website</a>. It describes the repositories and commits listed above; the specification remains the reference.",
+    "Text is licensed <a href=\"https://creativecommons.org/licenses/by/4.0/\">CC BY 4.0</a>; code and simulations are <a href=\"https://www.apache.org/licenses/LICENSE-2.0\">Apache-2.0</a>. Contributions are signed off under the <a href=\"https://developercertificate.org/\">Developer Certificate of Origin</a>."
+  ],
+  "retiredVocab": [
+    [
+      "\\bcouriers?\\b",
+      "endpoint"
+    ],
+    [
+      "\\bpost offices?\\b",
+      "CLPR Service"
+    ],
+    [
+      "\\bpostal\\b",
+      "endpoint"
+    ],
+    [
+      "\\boutbox(es)?\\b",
+      "outbound queue"
+    ],
+    [
+      "\\bticket numbers?\\b",
+      "message id"
+    ],
+    [
+      "(?<![\\w_])fingerprints?\\b",
+      "running hash (or plain \"hash\")"
+    ],
+    [
+      "\\bsignature cards?\\b",
+      "trust anchor"
+    ],
+    [
+      "\\baddress books?\\b",
+      "endpoint manifest"
+    ],
+    [
+      "\\b(sealed )?envelopes?\\b",
+      "commit / reveal"
+    ],
+    [
+      "\\bnotebooks?\\b",
+      "ledger"
+    ],
+    [
+      "\\bnothing (sits |is )?in (between|the middle)\\b",
+      "no bridge to trust: endpoints relay every bundle, and can delay a message but not forge one"
+    ],
+    [
+      "\\bzero custody\\b",
+      "no pooled user assets (the CLPR Service holds Connector funds and endpoint bonds)"
+    ],
+    [
+      "\\bimmutable (smart )?contract\\b|\\bverifiers? (contracts? )?(is|are) immutable\\b",
+      "a verifier whose address is fixed for the Channel's lifetime (the contract may be an upgradeable proxy)"
+    ],
+    [
+      "\\bBesu\\b",
+      "EVM ledger (name QBFT or CometBFT only as a proof type)"
+    ],
+    [
+      "\\bdeployable today\\b|\\bproduction[- ]ready\\b|\\bready for production\\b",
+      "reference implementation; the lab is for very early open projects"
+    ],
+    [
+      "\\binitial maintainers?\\b",
+      "its maintainers and committers are listed in the governance repository"
+    ],
+    [
+      "\\bguarantee[sd]? (the )?(delivery|that (it|a message) (is|will be) delivered)\\b|\\bguaranteed delivery\\b|\\bdelivery is guaranteed\\b",
+      "CLPR guarantees authenticity, integrity and order; delivery needs a relaying endpoint"
+    ],
+    [
+      "\\btypical bridges?\\b|\\bmost bridges\\b|\\ball bridges\\b|\\bbridges (always|never)\\b",
+      "many bridges, or interledger solutions that add an intermediary"
+    ],
+    [
+      "\\bnot yet (merged|part of the main Hiero)\\b|\\bpending (approval|the Hiero)\\b",
+      "Hiero status: specified by the approved HIP-1535, an opt-in service"
+    ],
+    [
+      "\\bon behalf of the Hedera Governing Council\\b",
+      "under its agreement with the Hedera Governing Council"
+    ],
+    [
+      "\\bswitched off by default\\b|\\boff by default\\b|\\bv0\\.78\\.\\d+\\b",
+      "state Hiero status only as HIP-1535 states it (Approved, opt-in)"
+    ],
+    [
+      "\\bone connector can serve many channels\\b",
+      "one operator can run connectors on many channels"
+    ],
+    [
+      "\\bas safe as the two ledgers themselves\\b",
+      "depends only on the two ledgers, their CLPR Services and the channel's verifier"
+    ],
+    [
+      "\\bnever forwards? a message through a third ledger\\b",
+      "CLPR defines a channel between two ledgers; forwarding through a third ledger is built by applications"
+    ],
+    [
+      "\\bnobody on the sending side is paid\\b",
+      "each charge is paid to whoever submitted the bundle, replies included"
+    ],
+    [
+      "\\bStewarded by\\b",
+      "A lab of / Hosted by (the lab is hosted by LF Decentralized Trust)"
+    ],
+    [
+      "\\bBuilt natively into\\b",
+      "Native service for (HIP-1535 specifies it; do not say it is built or merged)"
+    ],
+    [
+      "\\bone connector can serve many channels\\b|\\bone connector,? two channels\\b",
+      "a connector is registered on one Channel; one operator can run connectors on many"
+    ]
+  ],
+  "structure": {
+    "developers": {
+      "minFlows": 0
+    }
+  },
+  "labels": {
+    "callout": {
+      "impl": "In the EVM reference code"
+    }
+  },
+  "themeColor": {
+    "light": "#f6f5fb",
+    "dark": "#0c0b1d"
+  }
+}
